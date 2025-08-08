@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>INFIN8 Business Builder — v2.5.5 SINGLE</title>
+<meta name="theme-color" content="#0B57D0">
+<style>
+:root{--brand:#0B57D0;--ink:#0A1A2F;--muted:#5B6B7E;--bg:#F7FAFF;--line:#E6EEF7;--card:#fff}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 -apple-system,BlinkMacSystemFont,Inter,Arial,sans-serif}
+.container{max-width:1100px;margin:0 auto;padding:24px}
+header{position:sticky;top:0;background:#f9fbff;border-bottom:1px solid var(--line);backdrop-filter:saturate(160%) blur(8px);z-index:5}
+.nav{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:900}
+.logo-badge{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;color:#fff;background:linear-gradient(135deg,#0B57D0,#2f84ff)}
+.btn{border:0;border-radius:12px;padding:12px 16px;font-weight:800;cursor:pointer;background:#0B57D0;color:#fff;transition:transform .03s ease}
+.btn:active{transform:translateY(1px)}
+.btn-ghost{background:#fff;color:#0B57D0;border:1px solid var(--line)}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:0 10px 24px rgba(10,26,47,.08)}
+.card .mini{font-size:13px;color:var(--muted)}
+.hero{padding:24px 0 10px}
+.wizard{display:none;margin:14px 0}
+.progress{height:8px;background:#eaf0fb;border-radius:999px;overflow:hidden;margin:10px 0 16px}
+.bar{height:100%;width:0;background:linear-gradient(90deg,#0B57D0,#2f84ff)}
+.step{display:none;background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:0 10px 24px rgba(10,26,47,.08)}
+.step.active{display:block}
+.q-label{font-weight:900;margin:0 0 6px}
+.help{color:var(--muted);font-size:13px;margin:0 0 8px}
+input[type=text],input[type=email],select,textarea{width:100%;padding:12px;border-radius:12px;border:1px solid var(--line);font:inherit}
+.actions{display:flex;gap:10px;margin-top:12px}
+.results{display:none;grid-template-columns:1.2fr .8fr;gap:16px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:0 10px 24px rgba(10,26,47,.08)}
+.info{display:inline-block;width:18px;height:18px;border-radius:50%;background:#eef3ff;color:#1a3a7a;text-align:center;line-height:18px;font-size:12px;cursor:pointer;margin-left:6px}
+.pop{position:absolute;background:#0a1a2f;color:#fff;padding:12px;border-radius:10px;box-shadow:0 10px 24px rgba(0,0,0,.18);max-width:360px;display:none;z-index:20}
+footer{border-top:1px solid var(--line);margin-top:28px;padding:20px 0;color:var(--muted);font-size:14px}
+.links{display:flex;gap:14px;flex-wrap:wrap}
+.modal{position:fixed;inset:0;background:rgba(5,14,25,.45);display:none;place-items:center;padding:20px;z-index:50}
+.modal .box{background:#fff;color:#0a1a2f;max-width:860px;width:min(860px,96vw);max-height:90vh;overflow:auto;border-radius:16px;padding:22px}
+.badge{position:fixed;right:10px;bottom:10px;background:#0bb07b;color:#fff;padding:8px 10px;border-radius:10px;font-weight:900;box-shadow:0 10px 24px rgba(0,0,0,.18);z-index:60}
+.err{display:none;position:fixed;left:0;right:0;top:0;background:#ffebe9;color:#8b1111;padding:10px 14px;border-bottom:1px solid #ffd2cd;font-weight:900;z-index:100}
+@media(max-width:900px){.cards{grid-template-columns:1fr}.results{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div id="err" class="err"></div>
+<header><div class="container nav">
+  <div class="logo"><div class="logo-badge">∞</div>INFIN8 <span style="opacity:.7">Business Builder</span></div>
+  <div id="jsbadge" class="badge" style="display:none">JS: OK</div>
+</div></header>
+
+<main class="container">
+  <section class="hero" id="hero">
+    <h1>Build, Grow, and Scale Your Business — Starting Now</h1>
+    <p>Type an email, pick a path, answer the steps, get a plan + quote, pay 10% deposit, book kickoff. Done.</p>
+
+    <div style="display:flex;gap:8px;align-items:center;margin:12px 0">
+      <input id="email" type="email" placeholder="you@domain.com" style="max-width:360px">
+      <button class="btn" onclick="emailContinue()">Continue</button>
+    </div>
+
+    <div class="cards">
+      <article class="card">
+        <h3>Start a Business</h3>
+        <p class="mini">We’ll map your skills to the best model and your first 10 customers.</p>
+        <button class="btn" onclick="choose('start')">This is me →</button>
+      </article>
+      <article class="card">
+        <h3>Grow My Business</h3>
+        <p class="mini">Fix leaks, reframe the offer, and lift conversion with AI-assisted ops.</p>
+        <button class="btn" onclick="choose('grow')">This is me →</button>
+      </article>
+      <article class="card">
+        <h3>Scale What Works</h3>
+        <p class="mini">Systemize, automate with n8n, expand channels, protect margins.</p>
+        <button class="btn" onclick="choose('scale')">This is me →</button>
+      </article>
+    </div>
+  </section>
+
+  <section class="wizard" id="wizard">
+    <div class="progress"><div id="bar" class="bar"></div></div>
+    <div id="steps"></div>
+    <div class="actions">
+      <button class="btn btn-ghost" onclick="prev()">Back</button>
+      <button class="btn" onclick="next()">Next</button>
+    </div>
+  </section>
+
+  <section class="results" id="results">
+    <div class="panel">
+      <h3>Your Matched Plan</h3>
+      <div id="plan"></div>
+      <div id="quote"></div>
+      <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+        <a class="btn" id="deposit" href="https://buy.stripe.com/test_28E6oG5bh2o05Qdd0T8Vi00" target="_blank" rel="noopener">Pay 10% Deposit</a>
+      </div>
+      <p style="color:#5B6B7E;font-size:13px;margin-top:8px" id="maintNote"></p>
+    </div>
+    <div class="panel">
+      <h3>Schedule Your Kickoff</h3>
+      <div style="width:100%;height:680px;border:1px solid var(--line);border-radius:12px;overflow:hidden">
+        <iframe title="Book with INFIN8" src="https://calendly.com/scott-infin8automation/30min?hide_gdpr_banner=1" style="width:100%;height:100%;border:0"></iframe>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="links">
+      <a href="#" onclick="openLegal('privacy');return false;">Privacy</a>
+      <a href="#" onclick="openLegal('terms');return false;">Terms</a>
+      <span>© 2025 INFIN8 Automation</span>
+    </div>
+  </footer>
+</main>
+
+<div id="modal" class="modal"><div class="box">
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+    <h3 id="mTitle">Legal</h3>
+    <button class="btn btn-ghost" onclick="closeModal()">Close</button>
+  </div>
+  <div id="mBody" style="margin-top:8px"></div>
+</div></div>
+
+<div id="pop" class="pop"></div>
+
+<script>
+(function(){
+  // Diagnostics
+  document.getElementById('jsbadge').style.display='block';
+  window.onerror=function(msg,src,line,col,err){
+    var e=document.getElementById('err'); e.style.display='block'; e.textContent='Runtime error: '+msg+' @'+line+':'+col; console.error(msg,err);
+  };
+
+  // State
+  const STATE={path:null, step:0, steps:[], prices:{
+    "Starter site (5 pages, responsive)": {retail:1500, eta:"7–10d", info:"5 pages, responsive, basic SEO, analytics, lead form."},
+    "Brand kit + logo": {retail:600, eta:"3–5d", info:"Logo, palette, typography, favicon, mini brand guide."},
+    "Lead magnet + landing page": {retail:700, eta:"3–4d", info:"Lead magnet asset + opt-in + thank-you wiring."},
+    "Email welcome + 3-email offer": {retail:300, eta:"2d", info:"Welcome + 3-offer automation (copy + wiring)."},
+    "Review engine + reputation": {retail:500, eta:"2–3d", info:"GBP tune, review capture, weekly digest."},
+    "CRM + pipeline (n8n)": {retail:900, eta:"3–5d", info:"Stages, automations, basic reporting."},
+    "Content system (short-form plan)": {retail:600, eta:"2–3d", info:"90-day content plan + scripts/templates."},
+    "Analytics + KPIs dashboard": {retail:650, eta:"2–3d", info:"Core KPIs dashboard; AOV/CVR/CAC/LTV if available."},
+    "n8n automation (per workflow)": {retail:400, eta:"1–2d", info:"One workflow with error handling and logs."},
+    "Hugging Face model integration (per task)": {retail:900, eta:"5–7d", info:"Model selection + integration for a defined task."}
+  }, units:{
+    "Starter site (5 pages, responsive)":2, "Brand kit + logo":1, "Lead magnet + landing page":1,
+    "Email welcome + 3-email offer":1, "Review engine + reputation":1, "CRM + pipeline (n8n)":2,
+    "Content system (short-form plan)":1, "Analytics + KPIs dashboard":1, "n8n automation (per workflow)":1,
+    "Hugging Face model integration (per task)":3
+  }, depositPct:0.10 };
+
+  const $=s=>document.querySelector(s);
+  function byId(id){return document.getElementById(id)}
+  function show(el){el.style.display=''}
+  function hide(el){el.style.display='none'}
+
+  window.emailContinue=function(){
+    const v=byId('email').value.trim();
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)){ alert('Enter a valid email like name@domain.com'); return; }
+    localStorage.setItem('infin8_email', v);
+    alert('Email saved. Now choose your path.');
+  };
+
+  window.choose=function(path){
+    STATE.path=path; STATE.step=0; STATE.steps=buildSteps(path);
+    $('#hero').style.display='none'; show($('#wizard'));
+    const stepsEl=byId('steps'); stepsEl.innerHTML='';
+    STATE.steps.forEach((q,i)=>{
+      const d=document.createElement('div'); d.className='step'; if(i===0) d.classList.add('active');
+      d.innerHTML = '<div class="q-label">'+q.label+'</div>'+(q.help?'<div class="help">'+q.help+'</div>':'');
+      let field='';
+      if(q.type==='select'){
+        field='<select><option value="">Select…</option>'+q.options.map(o=>'<option>'+o+'</option>').join('')+'</select>';
+      } else if(q.type==='text'){ field='<input type="text">'; }
+      else if(q.type==='textarea'){ field='<textarea></textarea>'; }
+      else if(q.type==='multi'){ field=q.options.map(o=>'<label style="display:inline-flex;gap:8px;align-items:center;margin:4px 8px 4px 0"><input type="checkbox" value="'+o+'">'+o+'</label>').join(''); }
+      else if(q.type==='generate'){ field='<button class="btn" onclick="gen()">Generate Plan</button>'; }
+      d.insertAdjacentHTML('beforeend', field||'');
+      stepsEl.appendChild(d);
+    });
+    byId('bar').style.width='0%';
+  };
+
+  function buildSteps(path){
+    const ACQ=["SEO","AI SEO","Paid ads","Email","Email Outbound","Social","Partnerships","Outbound","Referrals","Events","Other"];
+    if(path==='start'){
+      return [
+        {id:'why',type:'textarea',label:'Why do you want to start a business—why now?',help:'Free form or paste.'},
+        {id:'skills',type:'multi',label:'Pick strengths (min 3)',help:'Select at least three.',options:['AI & Automation','Copywriting','Design','Sales (B2B)','Sales (B2C)','SEO','Short-form Video','Web Development','Writing/Editing']},
+        {id:'time',type:'select',label:'Hours you can commit weekly',options:['5–10','10–20','20–30','30–40','40+']},
+        {id:'budget',type:'select',label:'Launch budget (USD)',options:['$0–$250','$250–$1,000','$1,000–$3,000','$3,000+']},
+        {id:'gen',type:'generate',label:'Generate plan',help:'Creates options, quote, and deposit link.'}
+      ];
+    }
+    if(path==='grow'){
+      return [
+        {id:'site',type:'text',label:'Your main website URL (current)',help:'https://…'},
+        {id:'offer',type:'text',label:'Primary offer & price',help:'e.g., “DFY SEO — $1,500/mo”'},
+        {id:'aov',type:'select',label:'Average order value (AOV)',options:['$0–$49','$50–$99','$100–$249','$250–$499','$500–$999','$1k+']},
+        {id:'traffic',type:'multi',label:'Top traffic sources',options:ACQ},
+        {id:'gen',type:'generate',label:'Generate plan'}
+      ];
+    }
+    return [
+      {id:'rev',type:'select',label:'Current annual revenue (last 12 months)',options:['$100k–$300k','$300k–$1M','$1–3M','$3–10M','$10M+']},
+      {id:'team',type:'select',label:'Team size',options:['1–3','4–10','11–30','31–100','100+']},
+      {id:'gen',type:'generate',label:'Generate plan'}
+    ];
+  }
+
+  window.prev=function(){
+    const steps=[...document.querySelectorAll('.step')]; const i=steps.findIndex(s=>s.classList.contains('active'));
+    if(i<=0) return; steps[i].classList.remove('active'); steps[i-1].classList.add('active');
+    byId('bar').style.width=Math.round(((i-1)/Math.max(1,steps.length-1))*100)+'%';
+  };
+  window.next=function(){
+    const steps=[...document.querySelectorAll('.step')]; const i=steps.findIndex(s=>s.classList.contains('active'));
+    if(i<0) return;
+    const curr=steps[i]; const kind=STATE.steps[i].type;
+    if(kind==='select'){ if(!curr.querySelector('select').value){ alert('Choose an option.'); return; } }
+    if(kind==='text' || kind==='textarea'){ const v=(curr.querySelector('input,textarea').value||'').trim(); if(!v){ alert('Please enter a response.'); return; } }
+    if(kind==='multi'){ const c=curr.querySelectorAll('input[type=checkbox]:checked'); if(c.length<1){ alert('Pick at least one'); return; } }
+    if(i<steps.length-1){ steps[i].classList.remove('active'); steps[i+1].classList.add('active'); byId('bar').style.width=Math.round(((i+1)/Math.max(1,steps.length-1))*100)+'%'; }
+    else { gen(); }
+  };
+
+  window.gen=function(){
+    // very simple heuristic
+    const path=STATE.path||'start';
+    const plan = (path==='start') ? {title:'Business Options', items:[
+      {name:'Automation Agency (n8n-first)', why:'High-value painkiller for SMBs', startup:'$200–$800'},
+      {name:'Productized Creative Service', why:'Fast to first revenue', startup:'$100–$500'}
+    ]} : (path==='grow') ? {title:'Growth Levers', items:[
+      {name:'Offer Reframe + CRO Sprint', why:'+20–35% CVR typical', startup:'$0–$500'}
+    ]} : {title:'Scale Strategy', items:[
+      {name:'Ops Automation First', why:'Remove constraints', startup:'$0–$500'}
+    ]};
+
+    const items = defaultQuote(path);
+    const maint = maintenance(items);
+    renderPlan(plan, items, maint);
+    hide($('#wizard')); show($('#results')); window.scrollTo({top:0,behavior:'smooth'});
+  };
+
+  function defaultQuote(path){
+    const P=STATE.prices, add=n=>({name:n,...P[n],include:true});
+    if(path==='start') return ["Starter site (5 pages, responsive)","Brand kit + logo","Lead magnet + landing page","Email welcome + 3-email offer","Review engine + reputation","CRM + pipeline (n8n)","Content system (short-form plan)","Analytics + KPIs dashboard"].map(add);
+    if(path==='grow') return ["Lead magnet + landing page","Email welcome + 3-email offer","CRM + pipeline (n8n)","Review engine + reputation","Analytics + KPIs dashboard","n8n automation (per workflow)"].map(add);
+    return ["CRM + pipeline (n8n)","Analytics + KPIs dashboard","n8n automation (per workflow)","Hugging Face model integration (per task)","Content system (short-form plan)"].map(add);
+  }
+  function maintenance(items){
+    const units = items.filter(i=>i.include).reduce((s,i)=> s+(STATE.units[i.name]||0), 0);
+    return {units, price:99*units, line:`Monthly maintenance (${units} units)`};
+  }
+  function renderPlan(plan, items, maint){
+    $('#plan').innerHTML = '<h4>'+plan.title+'</h4>' + plan.items.map(o=>'<p><strong>'+o.name+'</strong> — '+o.why+' <em>(Startup '+o.startup+')</em></p>').join('');
+    const rows = items.map((it,i)=>'<tr><td><label style="display:inline-flex;gap:8px;align-items:center"><input type="checkbox" data-i="'+i+'" '+(it.include?'checked':'')+'> '+it.name+' <span class="info" data-i="'+i+'">i</span></label></td><td>$'+it.retail.toLocaleString()+'</td><td>'+it.eta+'</td></tr>').join('');
+    const sub = items.filter(x=>x.include).reduce((s,x)=>s+x.retail,0), dep=Math.round(sub*0.10), bal=sub-dep;
+    $('#quote').innerHTML = '<table style="width:100%;border-collapse:collapse"><thead><tr><th>Item</th><th>Price</th><th>ETA</th></tr></thead><tbody>'+rows+'</tbody><tfoot><tr><td>Subtotal</td><td>$'+sub.toLocaleString()+'</td><td></td></tr><tr><td>Deposit (10%)</td><td>$'+dep.toLocaleString()+'</td><td></td></tr><tr><td><strong>Total After Deposit</strong></td><td><strong>$'+bal.toLocaleString()+'</strong></td><td></td></tr><tr><td>'+maint.line+'</td><td>$'+maint.price.toLocaleString()+'/mo</td><td></td></tr></tfoot></table>';
+    $('#quote').onclick=function(e){
+      const info=e.target.closest('.info'); if(info){ const i=+info.dataset.i; const it=items[i]; pop(info, '<strong>'+it.name+'</strong><br>'+(STATE.prices[it.name]?.info||'')); }
+      const cb=e.target.closest('input[type=checkbox]'); if(cb){ items[cb.dataset.i].include=cb.checked; renderPlan(plan, items, maintenance(items)); }
+    }
+    $('#maintNote').textContent = 'Ongoing care: '+maint.line+' — $'+maint.price.toLocaleString()+'/mo (bundled).';
+  }
+  function pop(target, html){
+    const p=$('#pop'); p.innerHTML=html; p.style.display='block';
+    const r=target.getBoundingClientRect(); p.style.top=(window.scrollY+r.bottom+6)+'px'; p.style.left=Math.min(r.left, window.innerWidth-380)+'px';
+    document.addEventListener('click', (e)=>{ if(!e.target.closest('.info')) p.style.display='none'; }, {once:true});
+  }
+
+  // Legal content inline
+  const LEGAL={
+    privacy:`<p><strong>What we collect.</strong> Whatever you type or upload here. <strong>Where it lives.</strong> On your device until you export or submit. <strong>Children.</strong> Not for under 13. <strong>Rights (CCPA/CPRA).</strong> Access/correct/delete/export by contacting us. <strong>Third parties.</strong> Stripe for payments; Calendly for scheduling.</p>`,
+    terms:`<p><strong>Planning, not advice.</strong> Outputs are planning guidance only. <strong>Quotes.</strong> Good-faith estimates. <strong>Deposits.</strong> Refundable until work begins or within 24 hours (whichever comes first). <strong>Acceptable use.</strong> No unlawful/sensitive uploads.</p>`
+  };
+  window.openLegal=function(which){
+    byId('mTitle').textContent = which==='privacy'?'Privacy Policy':'Terms of Use';
+    byId('mBody').innerHTML = LEGAL[which] || '—';
+    show(byId('modal'));
+  };
+  window.closeModal=function(){ hide(byId('modal')); }
+
+})(); // end IIFE
+</script>
+</body>
+</html>
